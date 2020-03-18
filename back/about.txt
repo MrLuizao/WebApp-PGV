@@ -1,0 +1,154 @@
+##########################
+CLONANDO EL PROYECTO
+##########################
+Una vez clonado el proyecto con git clone realizar lo siguiente:
+
+1.- Crear una rama a partir de la rama MASTER con el nombre que deseen
+git checkout -b <nombre_rama>
+
+##########################
+DEPENDENCIAS DE PYTHON 3.6
+##########################
+
+2.- crear un ambiente python con el siguiente comando....
+python3.6 -m venv <nombre_ambiente>
+
+- una vez creado el ambiente, localicen el .gitignore que está en la raíz del proyecto gestionvisitantes
+- al final del archivo agreguen la ruta relativa hacia su carpeta del ambiente que crearon.
+
+3.- Activar su ambiente de python con el siguiente comando
+Linux - Mac
+source <nombre_ambiente>/bin/activate
+
+Windows
+nombre_ambiente\Scripts\activate.bat
+
+Ejecutar los siguientes comandos:
+
+python3.6 -m pip install --upgrade pip
+
+4.- Instalar dependencias siguientes con pip3.6:
+pip3.6 install -r requirements.txt
+
+##############################
+DEPENDENCIAS INSTALADAS
+##############################
+Flask ----> framework para realizar api rest
+flask-sqlalchemy ----> dependencias necesarias para modelos de base de datos y querys
+pip3 install psycopg2 ----> necesario para conectar a bd de postgres
+pip3 install psycopg2-binary
+pip3 install flask_script
+pip3 install flask_migrate
+
+//instalar otras dependencias para postgresql LINUX
+sudo apt-get install wget ca-certificates
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+
+dependencia con mysql
+pip3 install mysql-connector-python
+
+Con esto debemos de tener todo listo para correr la aplicación en nuestra computadora
+
+ejecutar desde back/ --> python3.6 app.py
+
+##########################
+CAMBIOS AL MODELO DE LA BASE DED ATOS
+##########################
+En el back existe una carpeta llamada, models que contiene un archivo con el mismo nombre...
+
+En ese archivo deben de crearse las tablas (en forma de clases) que vayamos a usar en el proyecto.
+Existe un ejemplo donde se crean 2 tablas, INVITACION E INVITACION_INVITADOS(detalle_invitacion), favor de seguir el ejemplo.
+
+Una vez realizado el cambio en el modelo desde el back, realizaremos los siguientes comandos colocandonos en la carpeta back:
+python3.6 manage.py db init --> crea un directorio llamado migrations
+
+python3.6 manage.py db migrate --> revisa los cambios realizados en el modelo y pre-genera un script para realizar una migración del modelo en la base de datos
+
+python3.6 manage.py db update [upgrade] --> ejecuta el script con los cambios que serán aplicados al modelo
+
+TODO CAMBIO AL MODELO, FAVOR DE PLATICARLO ANTES DE REALIZARLO.
+
+ver más aqui.... https://flask-migrate.readthedocs.io/en/latest/
+
+##########################
+ACERCA DE DEPENDENCIAS USADAS
+##########################
+
+Libreria usada....
+
+Migracion y actualizaciones de base de datos
+
+https://blog.theodo.com/2017/03/developping-a-flask-web-app-with-a-postresql-database-making-all-the-possible-errors/
+
+##########################
+INSTALACION DE POSTGRES EN DOCKER
+##########################
+
+Instalar docker desde docker.com
+
+Una vez instalado docker realizar lo siguiente:
+
+sudo docker pull postgres:11.5 --> descarga la imagen de docker con la version de postgres 11.5
+
+Generamos una instancia de postgres con docker, con el usuario postgres y la contraseña Axity2k19.!
+sudo docker 	run --rm --name pg-docker -e POSTGRES_PASSWORD=Axity2k19.! -d -p 5432:5432 \
+				 	-v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres:11.5
+
+Configuracion inicial
+psql -h localhost -U postgres -d postgres --> nos conectamos a localhost con usuario postgres a la bd postgres
+
+Creamos una base de datos
+create database gestion_invitados;
+
+Creamos un nuevo usuario
+create user axity with encrypted password 'Axity2k19.!';
+
+Concedemos permisos al usuario que creamos a la base de datos gestion_invitados
+grant all privileges on database gestion_invitados to axity;
+
+###############################################
+MYSQL 5.7.28
+###############################################
+docker pull mysql:5.7.28
+
+Levantar instancia de mysql con docker:
+sudo docker run --name mysql -e MYSQL_ROOT_PASSWORD=Axity2k19.! -d -p 3306:3306 mysql:5.7.28
+
+Conectarnos a la BD con docker en local host:
+sudo docker run -it --rm mysql:5.7.28 mysql -h172.17.0.2 -uroot --protocol=tcp -P 3306 -p ----> pedirá password {Axity2k19.!}
+
+Conectarse a la BD desde terminal con un cliente de mysql
+Instalar mysql --> sudo apt-get install mysql-client
+
+mysql -uroot -p -h 192.168.0.138 -P 3306 -D mysql
+
+Crear base de datos:
+CREATE DATABASE gestion_invitados;
+
+Crear usuario axity:
+CREATE USER axity IDENTIFIED BY 'Axity2k19.!';
+
+Permisos a usuario axity:
+GRANT ALL PRIVILEGES ON gestion_invitados.* TO axity;
+
+GRANT ALL PRIVILEGES ON gestion_invitados.* TO 'axity'@'%' IDENTIFIED BY 'Axity2k19.!' with GRANT OPTION;
+
+###############################################
+SI VAN A INSTALAR MÁS DEPENDENCIAS
+###############################################
+
+Asegurarse de usar la version de pip 3.6
+python3.6 -m pip install --upgrade pip
+
+*******Asegurense de ejecutar este comando con virtual environment de python activado.
+Pueden instalar las dependencias que sean necesarias con pip3.6 install <dependencia>
+
+Una vez que se instale la dependencia, ejecutar el siguiente comando:
+
+pip3.6 freeze -> requirements.txt
+Esto realizará cambios en el archivo asegurandose en listar
+TODAS LAS DEPENDENCIAS INSTALADAS MÁS LAS AGREGADAS antes de ejecutar el comando anterior
+
