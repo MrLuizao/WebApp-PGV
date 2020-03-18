@@ -1,0 +1,23 @@
+version: '3'
+services:
+   frontend:
+      image: gestion-visitantes_frontend
+      build:
+         context: .
+         dockerfile: front.Dockerfile
+      ports:
+         - "8581:8080"
+   flask:
+      image: flask-app
+      container_name: flask-gestion-visitas
+      build:
+         context: .
+         dockerfile: flask.Dockerfile
+      volumes:
+         - static:/static/
+         - migrations:/migrations/
+      ports:
+         - "8580:8580"
+volumes:
+   static:
+   migrations:
