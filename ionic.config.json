@@ -1,0 +1,7 @@
+{
+  "name": "appGestionVisitas",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
