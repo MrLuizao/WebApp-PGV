@@ -14,7 +14,7 @@ cryptography==2.8
 dnspython==1.16.0
 flasgger==0.9.3
 Flask==1.1.1
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 flask-eureka==0.1.0
 Flask-Migrate==2.5.2
 Flask-RESTful==0.3.7
